@@ -28,13 +28,11 @@ app.get("/api/hello", function (req, res) {
 app.get('/api/timestamp', (req, res) => {
   let date = Date.now()
   let result = timestamp(date)
-
   res.json(result)
 })
 
 app.get("/api/timestamp/:date", (req, res) => {
   let result = timestamp(req.params.date)
-
   res.json(result)
 });
 

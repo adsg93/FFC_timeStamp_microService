@@ -3,10 +3,8 @@ let moment = require('moment')
 let timestamp = (stamp) => {
 
     //check if the stamp is a valid date input and not string
-    let date = new Date(stamp)
-    let isValid = moment(date).isValid();
-
-    if (isValid) {
+    let isValid = parseInt(stamp)
+    if (!Number.isNaN(isValid)) {
 
         //check if the date is in UTC or UNIX. If true UTC, else UNIX
         let isUTC = moment(stamp).isValid()
@@ -27,7 +25,7 @@ let timestamp = (stamp) => {
         }
     } else{
         return{
-            error: 'invalid input!'
+            error: 'Invalid Date'
         }
     }
 }
