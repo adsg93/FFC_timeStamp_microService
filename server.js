@@ -3,6 +3,7 @@
 
 // init project
 var express = require('express');
+var moment = require('moment')
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -24,9 +25,30 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get("/api/timestamp/:date", (req, res) => {
+  //check if the date is in YYYY-MM-DD or UNIX. If true => YYYY-MM-DD, else false.
+  let validity = moment(req.params.date).isValid()
+
+  //Conditional response based on the time format 
+  if(validity){
+    let u = new Date(req.params.date)
+    res.json({
+      unix: u.getTime(),
+      utc: u.toUTCString()
+    })
+  } else{
+    let d = new Date(req.params.date*1)
+    res.json({
+      unix: d.getTime(),
+      utc: d.toUTCString()
+    })
+  }
+});
+
 
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+console.log(process.env.PORT)
+var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
