@@ -3,7 +3,7 @@
 
 // init project
 var express = require('express');
-var moment = require('moment')
+let timestamp = require('./timestamp')
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -25,24 +25,17 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/timestamp/:date", (req, res) => {
-  //check if the date is in YYYY-MM-DD or UNIX. If true => YYYY-MM-DD, else false.
-  let validity = moment(req.params.date).isValid()
+app.get('/api/timestamp', (req, res) => {
+  let date = Date.now()
+  let result = timestamp(date)
 
-  //Conditional response based on the time format 
-  if(validity){
-    let u = new Date(req.params.date)
-    res.json({
-      unix: u.getTime(),
-      utc: u.toUTCString()
-    })
-  } else{
-    let d = new Date(req.params.date*1)
-    res.json({
-      unix: d.getTime(),
-      utc: d.toUTCString()
-    })
-  }
+  res.json(result)
+})
+
+app.get("/api/timestamp/:date", (req, res) => {
+  let result = timestamp(req.params.date)
+
+  res.json(result)
 });
 
 
